@@ -1,9 +1,5 @@
 # Downloader
-一个实现多fragment状态栏沉浸式的库
-
-本库基于https://github.com/niorgai/Downloader
-
-[![](https://jitpack.io/v/qzc0537/Downloader.svg)](https://jitpack.io/#qzc0537/Downloader)
+一个简单易用的下载库
 
 使用
 --
