@@ -1,6 +1,8 @@
 # Downloader
 一个简单易用的下载库
 
+[![](https://jitpack.io/v/qzc0537/Downloader.svg)](https://jitpack.io/#qzc0537/Downloader)
+
 使用
 --
 1.project build.gradle下添加：
