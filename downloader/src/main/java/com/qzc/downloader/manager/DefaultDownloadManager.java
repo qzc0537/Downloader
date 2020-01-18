@@ -1,5 +1,7 @@
 package com.qzc.downloader.manager;
 
+import android.util.Log;
+
 import com.qzc.downloader.IDownLoader;
 import com.qzc.downloader.bean.DownloadInfo;
 import com.qzc.downloader.listener.OnDownloadListener;
@@ -19,6 +21,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class DefaultDownloadManager extends BaseDownloadManager implements IDownLoader {
 
+    private static final String TAG = "Downloader";
     private ConcurrentLinkedQueue<DownloadInfo> mDownloadInfoList;
 
     public DefaultDownloadManager(
@@ -92,6 +95,9 @@ public class DefaultDownloadManager extends BaseDownloadManager implements IDown
             return;
         }
         isDownload = true;
+        Log.d(TAG, "onStart->url: " + info.getUrl()
+                + "\nfileName: " + info.getFileName()
+                + "\nsavePath: " + info.getSavePath());
         if (listener != null) listener.onStart();
         Runnable runnable = new Runnable() {
             @Override
@@ -123,6 +129,7 @@ public class DefaultDownloadManager extends BaseDownloadManager implements IDown
                             onMainThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Log.d(TAG, "onDownloading->progress: " + finalProgressP);
                                     if (listener != null)
                                         listener.onDownloading(finalProgress, length, finalProgressP);
                                 }
@@ -140,6 +147,7 @@ public class DefaultDownloadManager extends BaseDownloadManager implements IDown
                             onMainThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Log.d(TAG, "onCancel");
                                     if (listener != null) listener.onCancel();
                                 }
                             });
@@ -147,6 +155,7 @@ public class DefaultDownloadManager extends BaseDownloadManager implements IDown
                             onMainThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    Log.d(TAG, "onCompleted->path: " + file.getAbsolutePath());
                                     if (listener != null) listener.onCompleted(file);
                                     isDownload = false;
                                     DownloadInfo info1 = mDownloadInfoList.poll();
@@ -164,6 +173,7 @@ public class DefaultDownloadManager extends BaseDownloadManager implements IDown
                         onMainThread(new Runnable() {
                             @Override
                             public void run() {
+                                Log.e(TAG, "onFailed->message: " + msg);
                                 if (listener != null) listener.onFailed(msg);
                             }
                         });
@@ -173,6 +183,7 @@ public class DefaultDownloadManager extends BaseDownloadManager implements IDown
                     onMainThread(new Runnable() {
                         @Override
                         public void run() {
+                            Log.e(TAG, "onFailed->message: " + e.getMessage());
                             if (listener != null) listener.onFailed(e.getMessage());
                         }
                     });
