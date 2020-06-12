@@ -44,7 +44,19 @@ public class FileUtil {
      * @return 文件
      */
     public static File createFile(String downloadPath, String fileName) {
-        return new File(downloadPath, fileName);
+        File dir = new File(downloadPath);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(downloadPath, fileName);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return file;
     }
 
     /**
